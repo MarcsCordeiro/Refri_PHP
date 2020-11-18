@@ -1,0 +1,8 @@
+CREATE TABLE `liberty`.`refri` ( `id` INT(10) NOT NULL AUTO_INCREMENT , 
+                                 `marca` VARCHAR(30) NOT NULL , 
+                                 `sabor` VARCHAR(30) NOT NULL , 
+                                 `tipo` ENUM('pet','garrafa','lata') NOT NULL , 
+                                 `volume` ENUM('250ml','600ml','1L') NOT NULL , 
+                                 `valor` DOUBLE NOT NULL , 
+                                 `quantidade` DOUBLE NOT NULL , 
+                                 PRIMARY KEY (`id`)) ENGINE = InnoDB; 

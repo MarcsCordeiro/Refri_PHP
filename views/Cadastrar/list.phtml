@@ -1,0 +1,437 @@
+
+    <div class="table-wrapper">
+        <div class="table-title">
+            <div class="row">
+                <div class="col-sm-6">
+                    <h2><b>Controle de Estoque</b></h2>
+                </div>
+                <div class="col-sm-6">
+                    <button type="button" name="btn_deletar" id="btn_deletar" class="btn btn-danger">Delete</button>
+                    <button type="button" name="add" id="add" class="btn btn-warning">Adicionar</button>
+                </div>
+            </div>
+        </div>
+        <?php  if(count($this->list_paginate)):?>
+        
+        <div id="refri_table">
+            
+        <form action="" method="GET">
+                <input type="hidden" name="go" value="<?= $this->getController() ?>">
+                <input type="hidden" name="action" value="<?= $this->getAction() ?>">
+                    <div class="col-md-6">
+                        <div class="row">
+                            <div class="col-md-8 col-xs-10">
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-search"></i>
+                                    </div>
+                                    <input type="text" name="search" placeholder="Buscar" class="form-control" value="<?=$this->_GET("search")?>">
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-default" type="button" title="Pesquisa avançada"data-toggle="collapse" data-target="#collapseFiltro" aria-expanded="true" aria-controls="collapseFiltro"><span class="caret"></span></button></span>
+                                        <span class="input-group-btn">
+                                            <button id="btn-search" type="submit" class="btn btn-primary">
+                                                <span class="fa fa-search"></span>
+                                            </button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+        </form>
+            <!-- <input type="text" placeholder="Litragem">
+            <input type="text" placeholder="Valores"> -->
+            
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>
+                            <span class="custom-checkbox">
+                                <input type="checkbox" id="selectAll">
+                                <label for="selectAll"></label>
+                            </span>
+                        </th>
+                        <th scope="col">Marca</th>
+                        <th scope="col">Sabor</th>
+                        <th scope="col">Tipo</th>
+                        <th scope="col">Volume</th>
+                        <th scope="col">Valor unidade</th>
+                        <th scope="col">Quantidade</th>
+                        <th >Ações</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <?php foreach ($this->list_paginate as $value):?>
+                    <tr>
+                        <td>
+                            <span class="custom-checkbox">
+                                <input type="checkbox" id="checkbox" name="checkbox[]" value="<?= $value['id']?>">
+                                <label for="checkbox"></label>
+                            </span>
+                        </td>
+                        <td><?= $value['marca']?></td>
+                        <td><?= $value['sabor']?></td>
+                        <td><?= $value['tipo']?></td>
+                        <td><?= $value['volume']?></td>
+                        <td><?= $value['valor']?></td>
+                        <td><?= $value['quantidade']?></td>
+                        <td>
+                            <a id="button-edit" type="button" title="Editar" data='<?= json_encode($value) ?>' class="btn btn-info btn-xs">
+                                <i class="material-icons" data-toggle="tooltip">&#xE254;</i> 
+                            </a>
+                            <a  type="button" id="btn_delete" class="btn btn-danger" id_delete="<?= $value['id'] ?>" style="color: #fff">
+                            <i class="material-icons" data-toggle="tooltip">&#xE872; </i>
+                            </a>
+                        </td>
+                        
+
+                    </tr>
+                    <?php endforeach;?>
+        
+                </tbody>
+            </table>
+        </div>
+        <?php endif;?>
+        <div class="clearfix">
+            <?php if($this->rows > $this->number_line):?>
+                <center><?= $this->pagination['html'] ?></center>
+            <?php endif;?>
+        </div>
+</div>    
+
+
+<!-- Tela Cadastrar -->
+<div id="add_data_Modal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">      
+                <h4 class="modal-title">Adicionar Produtos</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+                <div class="modal-body" id="employee_detail">   </div>
+                    
+                <div class="modal-body">  
+                    <form method="post" id="insert_form" action="<?=$this->url(array("go"=>"cadastrar","action"=>"add"))?>">   
+                        <input type="hidden" name="id">
+
+                        <div class="form-group">
+                            <label>Marca</label>
+                            <input type="text" class="form-control" id="marca" name="marca" placeholder="Digite à Marca" value="<?=$this->marca?>" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Sabor</label>
+                            <input type="text" class="form-control" id="sabor" name="sabor" placeholder="Digite o Sabor" value="<?=$this->sabor?>" required>
+                        </div>
+
+                        <label>Volume</label>  
+                            <select name="volume" id="volume" class="form-control">  
+                                <option value="250ml" checked>250ml</option>  
+                                <option value="600ml" <?=$this->tipo == '600ml' ? 'checked' : ''?>>600ml</option> 
+                                <option value="1L" <?=$this->tipo == '1L' ? 'checked' : ''?>>1L</option> 
+                            </select>  
+
+                        <label>Tipo</label>  
+                            <select name="tipo" id="tipo" class="form-control">  
+                                <option value="pet" checked>Pet</option>  
+                                <option value="garrafa" <?=$this->tipo == 'garrafa' ? 'checked' : ''?>>Garrafa</option> 
+                                <option value="lata" <?=$this->tipo == 'lata' ? 'checked' : ''?>>Lata</option> 
+                            </select> 
+        
+                        <div class="form-group">
+                            <label>Valor</label>
+                            <input type="text" class="form-control" id="valor" name="valor" placeholder="Digite o Valor" value="<?=$this->valor?>" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Quantidade</label>
+                            <input type="text" class="form-control" id="quantidade" name="quantidade" placeholder="Enter Quantidade" value="<?=$this->quantidade?>" required>
+                        </div>     
+                    
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">
+                                Cancelar
+                            </button>
+                            <button type="submit" class="btn btn-success" name="inserir">
+                                Salvar
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+    </div>
+</div>
+
+
+
+
+<script type="text/javascript">
+
+/*$(buscar_dados());
+
+function buscar_dados(consulta){
+    $.ajax({
+        url:'<?=$this->url(array("go"=>"cadastrar","action"=>"search"))?>',
+        type:'POST',
+        dataType:'html',
+        data: {consulta: consulta},
+    }).done(function(resposta){
+        $("#refri_table").html(resposta);
+    }).fail(function(){
+        console.log('error');
+    
+    });  
+}
+
+$(document).on('keyup', '#cada_busca', function(){
+    var valor = $(this).val();
+    if(valor != ""){
+        buscar_dados(valor);
+    }else{
+        buscar_dados();
+    }
+});*/
+
+$(document).ready(function(){
+    
+    //  if(confirm("Tem certeza que deseja deletar?")){
+    //       var [i]  = [];
+
+    //       $(':checkbox:checked').each(function(i){
+          
+    //            id[i] = $(this).val();
+    //       });
+    //            if(id.length===0){
+               
+    //                 alert("Selecione pelo menos uma caixa de seleção");
+    //            }
+    //            else{
+          
+    //                 $.ajax({
+    //                      url:'<?=$this->url(array("go"=>"cadastrar","action"=>"deletar"))?>',
+    //                      method:'POST',
+    //                      data:{id:id},
+    //                      success:function()
+    //                      {
+    //                           for(var i=0;i<id.length;i++)
+    //                           {
+    //                                $('tr#'+id[i].css('background-color','#ccc')); 
+    //                                $('tr#'+id[i]).fadeOut('slow'); 
+    //                           }
+    //                      }
+    //                 });
+    //            }
+          
+    //  }else {
+          
+    //       return false;
+    //  }
+
+    
+    
+    $(document).on('click', '#button-edit', function () {
+        let data = JSON.parse($(this).attr('data'));
+        console.log(data);
+        $('.modal-title').text('Editar produtos');
+        
+        $('input[name="id"]').val(data.id);
+        $('input[name="marca"]').val(data.marca);  
+        $('input[name="sabor"]').val(data.sabor);  
+        $('input[name="volume"]').val(data.volume);  
+        $('input[name="tipo"]').val(data.tipo);  
+        $('input[name="valor"]').val(data.valor);  
+        $('input[name="quantidade"]').val(data.quantidade);
+
+        $('#add_data_Modal').modal('show');
+    });
+
+    $(document).on('click', '#add', function(){
+        $('.modal-title').text('Adicionar produtos');
+
+        $('input[name="id"]').val('');
+        $('input[name="marca"]').val('');  
+        $('input[name="sabor"]').val('');  
+        $('input[name="volume"]').val('');  
+        $('input[name="tipo"]').val('');  
+        $('input[name="valor"]').val('');  
+        $('input[name="quantidade"]').val('');
+
+        $('#add_data_Modal').modal('show');
+    });  
+
+    $(document).on('click', '#btn_deletar', function(){
+        var [i]  = [];
+        const self = $(this);
+        const id = $(this).attr('checkbox');
+
+        swal({
+            title: "Tem certeza que deseja deletar?",
+            text: "Os dados serão perdidos.",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+        .then((willDelete) => {
+
+            if (willDelete) {
+                if (id) {
+
+                    $.ajax({
+                        url:'<?=$this->url(array("go"=>"cadastrar","action"=>"deletar"))?>',
+                        method:'POST',
+                        data:{id:id},
+                        success:function()
+                        {
+                            for(var i=0;i<id.length;i++){
+
+                                self.closest('tr#'+id[i]).remove();
+
+                                swal("Dados excluidos com sucesso!", {   
+                                icon: "success",
+                                });
+
+                                $('tr#'+id[i].css('background-color','#ccc')); 
+                                $('tr#'+id[i]).fadeOut('slow');
+                            }
+
+                            
+                        }
+
+                        
+                    });
+                }
+            }else{
+                swal("Cancelado!"); 
+            }
+        });
+    });
+
+    $(document).on('click', '#btn_delete', function(){       
+        const self = $(this);
+        const id = $(this).attr('id_delete');
+        
+        swal({
+            title: "Tem certeza que deseja deletar?",
+            text: "Os dados serão perdidos.",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+        .then((willDelete) => {
+
+            if (willDelete) {
+                if (id) {
+                    $.ajax({
+                        url:'<?=$this->url(array("go"=>"cadastrar","action"=>"deletar"))?>',
+                        method:'POST',
+                        data:{id: id},
+                        success:function()
+                        {
+                            self.closest('tr').remove();
+
+                            swal("Dados excluidos com sucesso!", {   
+                                icon: "success",
+                            });
+                        }    
+                    });
+                }
+            } else {
+                swal("Cancelado!");
+            }
+        });
+    });
+
+   /*$('#search').on('submit', function (event) {
+        event.preventDefault();
+        let dados = $(this).serialize();
+            $.ajax({
+                url:'<?=$this->url(array("go"=>"cadastrar","action"=>"buscar"))?>',
+                type:'GET',
+                dataType:'json',
+                data: dados,
+                success:function(response){
+                    console.log(response);
+                }
+
+            });
+    });*/
+
+
+
+
+    //   $('#add_data_Modal').submit(function(e){
+    //        e.preventDefault();
+    //        var formulario = $($this);
+    //        var retorno = alterarFormulario(formulario);
+    //   });
+      
+
+      
+     /* $(document).on('click', '.edit_data', function(){  
+          // var id = $(this).attr("id");  
+           $.ajax({  
+               url:"<?=$this->url(array("go"=>"cadastrar","action"=>"add"))?>",  
+               method:"POST",  
+               //data:{id:id},    
+               success: function(edit){
+                    $('.edit_data').html(edit);
+                    $('#insert_form').val("Update");  
+                    $('#add_data_Modal').modal('show'); 
+               }
+               success:function(data){  
+                    $('#marca').val(data.marca);  
+                    $('#sabor').val(data.sabor);  
+                    $('#volume').val(data.volume);  
+                    $('#tipo').val(data.tipo);  
+                    $('#valor').val(data.valor);  
+                    $('#quantidade').val(data.quantidade);
+                    $('#id').val(data.id);  
+                    $('#insert').val("Update");  
+                    $('#add_data_Modal').modal('show');  
+                }  
+           });  
+      }); */ 
+    // $('#insert_form').on("submit", function(event){  
+    //         event.preventDefault();  
+    //         if($('#marca').val() == "")  
+    //         {  
+    //             alert("Marca é obrigatoria!");  
+    //         }  
+    //         else if($('#sabor').val() == '')  
+    //         {  
+    //             alert("Sabor é obrigatorio!");  
+    //         }  
+    //         else if($('#volume').val() == '')  
+    //         {  
+    //             alert("Volume é obrigatorio!");  
+    //         }  
+    //         else if($('#valor').val() == '')  
+    //         {  
+    //             alert("Valor é obrigatorio!");  
+    //         }  
+    //         else  
+    //         {  
+    //             $.ajax({  
+    //                 url:"<?=$this->url(array("go"=>"cadastrar","action"=>"add"))?>",  
+    //                 method:"POST",  
+    //                 data:$('#insert_form').serialize(),  
+    //                 beforeSend:function()
+    //                 {  
+    //                         $('#insert').val("Inserting");  
+    //                 },  
+    //                 success:function(data)
+    //                 {  
+    //                         $('#insert_form')[0].reset();  
+    //                         $('#add_data_Modal').modal('hide');  
+    //                         $('#refri_table').html(data);  
+    //                 }  
+    //             });  
+    //         }
+          
+        
+    // });
+
+});
+
+</script>

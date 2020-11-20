@@ -5,6 +5,6 @@
  */
 class User_Base extends Lb_Bases{
     protected $_name = "user";    //Nome da Tabela
-    protected $_primary = "id_user";   //Chave Primaria
+    protected $_primary = "id";   //Chave Primaria
 }
 ?>

@@ -30,7 +30,6 @@ class Cadastrar_Controller extends Lb_Controllers {
             $valor = $this->_POST('valor');
             $quantidade = $this->_POST('quantidade');
 
-
             $dados = [
                 'marca' => $marca,
                 'sabor' => $sabor,
@@ -39,6 +38,8 @@ class Cadastrar_Controller extends Lb_Controllers {
                 'valor' => $valor,
                 'quantidade' => $quantidade
             ];
+
+            
 
         
             if($id != '') {
@@ -49,7 +50,7 @@ class Cadastrar_Controller extends Lb_Controllers {
 
             }else{
 
-                $this->Refri->insert($dados);
+                $this->Refri->insert($dados);   
 
                 $message = 'Dados inseridos com sucesso!';   
             }
@@ -92,9 +93,7 @@ class Cadastrar_Controller extends Lb_Controllers {
         if ($id) {
             $this->Refri->delete($id);
         }
-
         exit;
-
     }
 
     

@@ -1,1 +1,50 @@
-<h1>Olá</h1>
+<!--<?php 
+if(!isset($_SESSION)){
+    session_start();
+}
+if(!isset($_SESSION['usuario'])){
+    header("Location: http://localhost:8081/");
+}
+?> -->
+
+<div class="login">
+	<h1>Login</h1>
+    <form method="post" onSubmit="return validarLogin();" id="formLogin">
+    	<input type="text" name="usuario" placeholder="Usuario" required="required" />
+        <input type="password" name="senha" placeholder="Senha" required="required" />
+        <input type="submit" class="btn btn-primary btn-block btn-large" value="Entra"/>
+    </form>
+    <div>
+        <a href="<?=$this->url(["go"=>"user","action"=>"add"])?>" style="color: #fff">Crie sua conta</a> 
+    </div>
+</div>
+
+
+ <a href="<?=$this->url(["go"=>"cadastrar","action"=>"list"])?>" > Listar Usuarios</a> 
+
+<script type="text/javascript">
+
+    function validarLogin(){
+        let usuario =  $('input[name="usuario"]').val('');
+      let senha = $('input[name="senha"]').val('');
+
+        if(usuario != "" && senha != ""){
+            $.ajax({
+            url:'<?=$this->url(["go"=>"user","action"=>"verificar"])?>',
+            type:'POST',
+            data: {id:id},
+            success:function(resultado){
+                if(resultado > 0){
+                    alert("Usuário ou senha invalidos. Tente novamente!!!");
+                }else{
+                    window.location="<?=$this->url(["go"=>"cadastrar","action"=>"list"])?>";
+                }
+                
+            }
+          });
+        }
+       
+    }
+
+
+</script>

@@ -1,5 +1,13 @@
-
-    <div class="table-wrapper">
+<!--<?php 
+if(!isset($_SESSION)){
+    session_start();
+}
+if(!isset($_SESSION['usuario'])){
+    header("Location: http://localhost:8081/");
+}
+?> -->
+   
+   <div class="table-wrapper">
         <div class="table-title">
             <div class="row">
                 <div class="col-sm-6">
@@ -8,6 +16,8 @@
                 <div class="col-sm-6">
                     <button type="button" name="btn_deletar" id="btn_deletar" class="btn btn-danger">Delete</button>
                     <button type="button" name="add" id="add" class="btn btn-warning">Adicionar</button>
+                    <a href="<?=$this->url(["go"=>"estoque","action"=>"estoque"])?>" type="button" name="estoque" id="estoque" class="btn btn-Secondary">Estoque</a>
+
                 </div>
             </div>
         </div>
@@ -23,11 +33,10 @@
                             <div class="col-md-8 col-xs-10">
                                 <div class="input-group">
                                     <div class="input-group-addon">
-                                        <i class="fa fa-search"></i>
+                                        
                                     </div>
                                     <input type="text" name="search" placeholder="Buscar" class="form-control" value="<?=$this->_GET("search")?>">
-                                    <span class="input-group-btn">
-                                        <button class="btn btn-default" type="button" title="Pesquisa avançada"data-toggle="collapse" data-target="#collapseFiltro" aria-expanded="true" aria-controls="collapseFiltro"><span class="caret"></span></button></span>
+                                    
                                         <span class="input-group-btn">
                                             <button id="btn-search" type="submit" class="btn btn-primary">
                                                 <span class="fa fa-search"></span>
@@ -39,8 +48,7 @@
                         </div>
                     </div>
         </form>
-            <!-- <input type="text" placeholder="Litragem">
-            <input type="text" placeholder="Valores"> -->
+           
             
             <table class="table table-striped table-hover">
                 <thead>
@@ -112,7 +120,7 @@
                 <div class="modal-body" id="employee_detail">   </div>
                     
                 <div class="modal-body">  
-                    <form method="post" id="insert_form" action="<?=$this->url(array("go"=>"cadastrar","action"=>"add"))?>">   
+                    <form method="post" id="insert_form" action="<?=$this->url(["go"=>"cadastrar","action"=>"add"])?>">   
                         <input type="hidden" name="id">
 
                         <div class="form-group">
@@ -164,34 +172,16 @@
 </div>
 
 
+ 
+
+           
 
 
 <script type="text/javascript">
 
-/*$(buscar_dados());
 
-function buscar_dados(consulta){
-    $.ajax({
-        url:'<?=$this->url(array("go"=>"cadastrar","action"=>"search"))?>',
-        type:'POST',
-        dataType:'html',
-        data: {consulta: consulta},
-    }).done(function(resposta){
-        $("#refri_table").html(resposta);
-    }).fail(function(){
-        console.log('error');
-    
-    });  
-}
 
-$(document).on('keyup', '#cada_busca', function(){
-    var valor = $(this).val();
-    if(valor != ""){
-        buscar_dados(valor);
-    }else{
-        buscar_dados();
-    }
-});*/
+
 
 $(document).ready(function(){
     
@@ -260,8 +250,14 @@ $(document).ready(function(){
         $('#add_data_Modal').modal('show');
     });  
 
+
+    $(document).on('click', '#estoque', function(){
+        $('.modal-title').text('Total de Produtos');
+        $('#add_data_estoque').modal('show');
+    });  
+
     $(document).on('click', '#btn_deletar', function(){
-        var [i]  = [];
+        
         const self = $(this);
         const id = $(this).attr('checkbox');
 
@@ -289,23 +285,18 @@ $(document).ready(function(){
 
                                 swal("Dados excluidos com sucesso!", {   
                                 icon: "success",
-                                });
-
-                                $('tr#'+id[i].css('background-color','#ccc')); 
-                                $('tr#'+id[i]).fadeOut('slow');
+                                });                               
                             }
-
-                            
-                        }
-
-                        
+                        }         
                     });
                 }
             }else{
                 swal("Cancelado!"); 
             }
         });
+        
     });
+    
 
     $(document).on('click', '#btn_delete', function(){       
         const self = $(this);
@@ -342,96 +333,26 @@ $(document).ready(function(){
         });
     });
 
-   /*$('#search').on('submit', function (event) {
-        event.preventDefault();
-        let dados = $(this).serialize();
-            $.ajax({
-                url:'<?=$this->url(array("go"=>"cadastrar","action"=>"buscar"))?>',
-                type:'GET',
-                dataType:'json',
-                data: dados,
-                success:function(response){
-                    console.log(response);
-                }
 
-            });
-    });*/
+    /*
+        if(confirm("Tem certeza que deseja deletar?")){
+          var [i]  = [];
 
-
-
-
-    //   $('#add_data_Modal').submit(function(e){
-    //        e.preventDefault();
-    //        var formulario = $($this);
-    //        var retorno = alterarFormulario(formulario);
-    //   });
-      
-
-      
-     /* $(document).on('click', '.edit_data', function(){  
-          // var id = $(this).attr("id");  
-           $.ajax({  
-               url:"<?=$this->url(array("go"=>"cadastrar","action"=>"add"))?>",  
-               method:"POST",  
-               //data:{id:id},    
-               success: function(edit){
-                    $('.edit_data').html(edit);
-                    $('#insert_form').val("Update");  
-                    $('#add_data_Modal').modal('show'); 
-               }
-               success:function(data){  
-                    $('#marca').val(data.marca);  
-                    $('#sabor').val(data.sabor);  
-                    $('#volume').val(data.volume);  
-                    $('#tipo').val(data.tipo);  
-                    $('#valor').val(data.valor);  
-                    $('#quantidade').val(data.quantidade);
-                    $('#id').val(data.id);  
-                    $('#insert').val("Update");  
-                    $('#add_data_Modal').modal('show');  
-                }  
-           });  
-      }); */ 
-    // $('#insert_form').on("submit", function(event){  
-    //         event.preventDefault();  
-    //         if($('#marca').val() == "")  
-    //         {  
-    //             alert("Marca é obrigatoria!");  
-    //         }  
-    //         else if($('#sabor').val() == '')  
-    //         {  
-    //             alert("Sabor é obrigatorio!");  
-    //         }  
-    //         else if($('#volume').val() == '')  
-    //         {  
-    //             alert("Volume é obrigatorio!");  
-    //         }  
-    //         else if($('#valor').val() == '')  
-    //         {  
-    //             alert("Valor é obrigatorio!");  
-    //         }  
-    //         else  
-    //         {  
-    //             $.ajax({  
-    //                 url:"<?=$this->url(array("go"=>"cadastrar","action"=>"add"))?>",  
-    //                 method:"POST",  
-    //                 data:$('#insert_form').serialize(),  
-    //                 beforeSend:function()
-    //                 {  
-    //                         $('#insert').val("Inserting");  
-    //                 },  
-    //                 success:function(data)
-    //                 {  
-    //                         $('#insert_form')[0].reset();  
-    //                         $('#add_data_Modal').modal('hide');  
-    //                         $('#refri_table').html(data);  
-    //                 }  
-    //             });  
-    //         }
+          $(':checkbox:checked').each(function(i){
           
-        
-    // });
+               id[i] = $(this).val();
+          });   
+               if(id.length===0){
+               
+                    alert("Selecione pelo menos uma caixa de seleção");
+                }
+                else{*/
+
+   
 
 });
 
 </script>
+
+
+

@@ -14,7 +14,7 @@ class Index_Controller extends Lb_Controllers {
 
     public function index() {
         
-       // $this->redirect($this->url(["go"=>"user","action"=>"add"]));
+       //$this->redirect($this->url(["go"=>"user","action"=>"index"]));
         
         
     }
